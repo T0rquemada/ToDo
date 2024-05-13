@@ -1,0 +1,47 @@
+<!doctype html>
+<head>
+  <meta charset="UTF-8">
+  <title>ToDo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+<body>
+  <header class="header">
+    <div class="header__title">ToDo</div>
+    <div class="header__btn__container">
+      <button id="sign_inBtn" class="header__btn">Sign In</button>
+      <button id="sign_upBtn" class="header__btn">Sign Up</button>
+      <button id="sign_outBtn" class="header__btn">Sign Out</button>
+    </div>
+  </header>
+  <div class="container">
+      <div class="sidebar__container">
+        <div id="sidebar__projects">
+          <div class="task__group__section">
+            <div id="my__tasks" class="tasks__project">My tasks</div>
+            <button id="add__my__tasks" class="add__task">+</button>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="tasks" class="tasks"></div>
+  </div>
+
+  <div id="pop_up__screen">
+        <div id="pop_up__container">
+          <div class="pop_up__header">
+            <div id="pop_up__title"></div>
+            <div id="pop_up__close">X</div>
+          </div>
+
+          <div id="pop_up__footer" class="pop_up__footer">
+            <button class="pop_up__btns" id="pop_up__cancel">Cancel</button>
+            <button class="pop_up__btns" id="pop_up__submit">Submit</button>
+          </div>
+        </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/user.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/tasks.js') }}"></script>
+</body>
