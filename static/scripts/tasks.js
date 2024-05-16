@@ -1,4 +1,4 @@
-// Change 'complete' of task in DB
+// PUT-request to change 'complete' of task in DB
 function updateTaskComplete(taskId, complete) {
     fetch(`/tasks/${taskId}`, {
         method: 'PUT',
@@ -21,6 +21,27 @@ function updateTaskComplete(taskId, complete) {
     });
 }
 
+// DELETE-request on server
+function deleteTaskRequest(taskID) {
+   return fetch(`/tasks/${taskID}`, {
+            method: 'DELETE'
+        })
+    .then(response => {
+            if (response.ok) {
+                console.log('Task deleted successfully!');
+            } else {
+                console.error('Failed to delete task')
+            }
+        })
+    .catch(error => console.error('Error while deleting task: ', error));
+}
+
+// Make DELETE-request and generate tasks list
+function deleteTask(taskID) {
+    deleteTaskRequest(taskID)
+        .then(() => generateTasks())
+}
+
 // Return task in div element
 function createTaskCard(x) {
     let { id, title, description, complete }= x;
@@ -29,9 +50,7 @@ function createTaskCard(x) {
     task.className = "task";
 
     let leftPart = document.createElement('div');
-    leftPart.style.display = 'flex';
-    leftPart.style.flexDirection = 'column';
-    leftPart.style.paddingRight = '1rem';
+    leftPart.className = 'task__left_part__container'
 
     let task_title = document.createElement('div');
     task_title.className = "task__title";
@@ -43,6 +62,21 @@ function createTaskCard(x) {
 
     leftPart.appendChild(task_title);
     leftPart.appendChild(task_desc);
+
+    let rightPart = document.createElement('div');
+    rightPart.className = 'task__right_part__container'
+
+    let taskSettingsContainer = document.createElement('div');
+    taskSettingsContainer.className = 'task__settings__container'
+    taskSettingsContainer.textContent = '...';
+
+    let taskSettings = document.createElement('div');
+    taskSettings.className = 'task__settings'
+
+    taskSettingsContainer.addEventListener('click', () => {
+        deleteTask(id)
+    });
+
 
     let task_complete = document.createElement('div');
     task_complete.className = "task__complete";
@@ -64,8 +98,11 @@ function createTaskCard(x) {
     // Hide 'O' letter
     if (!x.complete) task_complete.style.color = '#2a4549';
 
+    rightPart.appendChild(taskSettingsContainer);
+    rightPart.appendChild(task_complete);
+
     task.appendChild(leftPart);
-    task.appendChild(task_complete);
+    task.appendChild(rightPart);
 
     return task;
 }
@@ -126,6 +163,7 @@ function getTaskRequest(creator_id) {
         });
 }
 
+// Fill task container with tasks
 async function generateTasks() {
     // Check, that user signed in
     if (signed) {

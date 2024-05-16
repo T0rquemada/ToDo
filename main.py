@@ -172,6 +172,19 @@ def update_task(cursor, task_id):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route("/tasks/<int:task_id>", methods=['DELETE'])
+@open_db
+def delete_task(cursor, task_id):
+    try:
+        queue = 'DELETE FROM tasks WHERE id=?'
+        cursor.execute(queue, (task_id, ))
+
+        return 'Task deleted successfully!', 200
+    except Exception as e:
+        print('Error while updating task: ', e)
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route("/")
 def index(name=None):
     return render_template('index.html', name=name)

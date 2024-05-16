@@ -1,16 +1,16 @@
 # Multi-user ToDo list
 
-## To run
+## To build
 Clone repo
 ```shell
-git clone ...
+git clone https://github.com/T0rquemada/ToDo.git
 ```
 ### Automatically
 1. Run **build.sh** file
 ```shell
 ./build.sh
 ```
-If you can't run ./build.sh, run ```chmod +x build.sh``` (It's add execute permission for file)
+If you can't run ./build.sh, run ```chmod +x build.sh``` (It's add execute permission for file) <br>
 2. Activate venv
 ```shell
 source venv/bin/activate
@@ -22,7 +22,7 @@ flask --app main run
 4. Open web page in browser
 ### Manually
 1. Create "data.db" file
-2. Run next functions in python file (in root of project). This will create tables in database
+2. Create .py file in root of project, and copy code under in it. Then run it. This will create tables in database
 ```python
 import sqlite3
 
@@ -50,6 +50,7 @@ try:
             )''')
     print('Table "tasks" created successfully!')
 except Exception as e:
+    con.rollback()
     print("Error while creating tables: ", e)
 finally:
     con.commit()
@@ -68,7 +69,23 @@ pip install -r requirements.txt
 flask --app main run
 ```
 
+## To run
+1. Activate venv
+```shell
+source venv/bin/activate
+```
+2. Run flask app
+```shell
+flask --app main run
+```
 ## ToDo:
 - [ ] Editing/Deleting tasks
+- [ ] Sort completed task in end of task list
 - [ ] Task tabs
 - [ ] Common task tabs
+
+#### Used packages
+1. Flask
+2. sqlite3
+3. json
+4. functools

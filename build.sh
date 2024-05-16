@@ -30,6 +30,7 @@ try:
             )''')
     print('Table "tasks" created successfully!')
 except Exception as e:
+    con.rollback()
     print("Error while creating tables: ", e)
 finally:
     con.commit()

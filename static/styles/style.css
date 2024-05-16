@@ -51,6 +51,7 @@ input {
 
 .container {
     display: flex;
+    justify-content: space-between;
 }
 
 .sidebar__container {
@@ -161,7 +162,7 @@ input {
 
 /*Task part*/
 .tasks {
-    width: 100%;
+    width: 75%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -171,8 +172,7 @@ input {
     margin: 0.75rem 0;
     padding: 0.5rem;
 
-    width: 80%;
-    height: 10%;
+    width: 60%;
 
     display: flex;
     justify-content: space-between;
@@ -180,9 +180,30 @@ input {
     border: 1px solid #000;
 }
 
-.task__desc {
-    padding: 0.5rem 0;
+.task__left_part__container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem 0 0;
     overflow: hidden;
+}
+
+.task__desc {
+    padding: 0.5rem;
+    overflow: hidden;
+}
+
+.task__right_part__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.task__settings {
+    width: fit-content;
+    transform: rotate(180deg);
+    cursor: pointer;
 }
 
 .task__complete {
@@ -191,4 +212,5 @@ input {
     height: fit-content;
     border: 1px solid #000;
     user-select: none;
+    cursor: pointer;
 }
