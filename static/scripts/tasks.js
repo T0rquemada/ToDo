@@ -66,17 +66,40 @@ function createTaskCard(x) {
     let rightPart = document.createElement('div');
     rightPart.className = 'task__right_part__container'
 
+    let dots = document.createElement('div');
+    dots.textContent = '...';
+    dots.style.transform = 'rotate(180deg)';
+    dots.style.userSelect = 'none';
+
+    dots.addEventListener('click', () => {
+        taskSettings.style.display = taskSettings.style.display === 'block' ? 'none' : 'block';
+    });
+
     let taskSettingsContainer = document.createElement('div');
     taskSettingsContainer.className = 'task__settings__container'
-    taskSettingsContainer.textContent = '...';
+    taskSettingsContainer.appendChild(dots);
 
     let taskSettings = document.createElement('div');
     taskSettings.className = 'task__settings'
 
-    taskSettingsContainer.addEventListener('click', () => {
-        deleteTask(id)
+    let editTaskDiv = document.createElement('div');
+    editTaskDiv.textContent = 'Edit task';
+
+    let deleteTaskDiv = document.createElement('div');
+    deleteTaskDiv.textContent = 'Delete task';
+
+    taskSettings.appendChild(editTaskDiv);
+    taskSettings.appendChild(deleteTaskDiv);
+
+    taskSettingsContainer.appendChild(taskSettings);
+
+    deleteTaskDiv.addEventListener('click', () => {
+        deleteTask(id);
     });
 
+    editTaskDiv.addEventListener('click', () => {
+        console.log('edit task!');
+    });
 
     let task_complete = document.createElement('div');
     task_complete.className = "task__complete";

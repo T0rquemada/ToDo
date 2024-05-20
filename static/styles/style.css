@@ -200,10 +200,25 @@ input {
 
 }
 
-.task__settings {
-    width: fit-content;
-    transform: rotate(180deg);
+.task__settings__container {
     cursor: pointer;
+    position: relative;
+}
+
+.task__settings {
+    display: none;
+    position: absolute;
+    left: -4rem;
+    top: 0.75rem;
+    width: 4.5rem;
+    padding: 0.5rem;
+    text-align: right;
+    background-color: #fff;
+    border-radius: 7px;
+}
+
+.task__settings>* {
+    padding: 0.125rem 0;
 }
 
 .task__complete {
