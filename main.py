@@ -161,12 +161,22 @@ def get_tasks(cursor):
 @app.route("/tasks/<int:task_id>", methods=['PUT'])
 @open_db
 def update_task(cursor, task_id):
-    try:
-        complete_status = request.json.get('complete')
-        queue = 'UPDATE tasks SET complete= ? WHERE id=?'
-        cursor.execute(queue, (complete_status, task_id))
+    data = request.get_json()
 
-        return jsonify({'complete': complete_status})
+    if not data:
+        return jsonify({"error": "Invalid data"}), 400
+
+    try:
+        if 'complete' in data:
+            queue = 'UPDATE tasks SET complete= ? WHERE id=?'
+            cursor.execute(queue, (data['complete'], task_id))
+
+            return jsonify({'complete': data['complete']})
+        elif 'title' in data and 'desc' in data:
+            queue = 'UPDATE tasks SET title=?, description=? WHERE id=?'
+            cursor.execute(queue, (data['title'], data['desc'], task_id))
+
+            return jsonify({'message': f'Title: {data["title"]}, desc: {data["desc"]}'})
     except Exception as e:
         print('Error while updating task: ', e)
         return jsonify({'error': str(e)}), 500

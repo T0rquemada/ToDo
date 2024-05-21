@@ -115,6 +115,9 @@ popupSubmit.addEventListener('click', () => {
             case 'Create task':
                 submitTask(addTask);
                 break;
+            case 'Edit task':
+                submitTask(editTask, true);
+                break;
             default:
                 throw new Error('Error while submitting...');
         }
@@ -141,14 +144,24 @@ function submitUser(func, signin=false) {
 }
 
 // Submit task in pop up
-function submitTask(func) {
+function submitTask(func, edit=false) {
     // Form task to send on server
-    let task = {
-        title: titleInput.value,
-        desc: descInput.value,
-        complete: false,
-        creator_id: Number(localStorage.getItem('id'))
-    };
+    let task = {};
+
+    if (!edit) {
+        task = {
+            title: titleInput.value,
+            desc: descInput.value,
+            complete: false,
+            creator_id: Number(localStorage.getItem('id'))
+        };
+    } else if (edit) {
+        task = {
+            task_id: Number(localStorage.getItem('task_id')),
+            title: titleInput.value,
+            desc: descInput.value
+        };
+    }
 
     func(task);
 }

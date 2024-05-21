@@ -1,11 +1,22 @@
-// PUT-request to change 'complete' of task in DB
-function updateTaskComplete(taskId, complete) {
-    fetch(`/tasks/${taskId}`, {
+// PUT-request to update task
+function updateTaskRequest(taskId, updated) {
+    let body;
+
+    if ('complete' in updated) {
+        body = JSON.stringify({ complete: updated.complete });  // Update 'complete' of task
+    } else if ('title' in updated && 'desc' in updated) {
+        body = JSON.stringify({ title: updated.title, desc: updated.desc }); // Update 'title&desc' of task
+    } else {
+        console.error('Error: The updated object must contain either "complete" or both "title" and "desc".');
+        return;
+    }
+
+    return fetch(`/tasks/${taskId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ complete: complete })
+        body: body
     })
     .then(response => {
         if (!response.ok) {
@@ -42,6 +53,16 @@ function deleteTask(taskID) {
         .then(() => generateTasks())
 }
 
+// send edited task to server -> generate tasks after editing
+function editTask(editedTask) {
+    updateTaskRequest(editedTask.task_id, {title: editedTask.title, desc: editedTask.desc})
+        .then(() => {
+            generateTasks();
+            active(popup__screen, false);
+            localStorage.removeItem('task_id'); // Clear localStorage
+        })
+}
+
 // Return task in div element
 function createTaskCard(x) {
     let { id, title, description, complete }= x;
@@ -72,7 +93,8 @@ function createTaskCard(x) {
     dots.style.userSelect = 'none';
 
     dots.addEventListener('click', () => {
-        taskSettings.style.display = taskSettings.style.display === 'block' ? 'none' : 'block';
+        if (!taskSettings.classList.contains('active')) active(taskSettings);
+        else active(taskSettings, false);
     });
 
     let taskSettingsContainer = document.createElement('div');
@@ -95,10 +117,15 @@ function createTaskCard(x) {
 
     deleteTaskDiv.addEventListener('click', () => {
         deleteTask(id);
+        active(taskSettings, false);
     });
 
     editTaskDiv.addEventListener('click', () => {
-        console.log('edit task!');
+        active(taskSettings, false);
+        localStorage.setItem('task_id', id);
+        popupTitle.textContent = 'Edit task';
+        fillTaskPopup();
+        active(popup__screen);
     });
 
     let task_complete = document.createElement('div');
@@ -115,7 +142,7 @@ function createTaskCard(x) {
             task_complete.style.color = '#000';
             complete = true;
         }
-        updateTaskComplete(id, complete);
+        updateTaskRequest(id, {complete: complete});
     });
 
     // Hide 'O' letter
